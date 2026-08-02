@@ -156,7 +156,32 @@ Vyre is a pure client of the bridge's existing HTTP API — it adds no endpoints
 
 ## Screenshots
 
-Run it (Option A or B) and grab captures of the Overview, Server topology, and Scripts Explorer, then drop them in `docs/` and reference them here.
+### Overview
+![Overview](docs/overview.png)
+
+### Server topology
+![Server topology](docs/server.png)
+
+### Scripts Explorer
+![Scripts Explorer](docs/scripts.png)
+
+<details>
+<summary>More views</summary>
+
+### Tools
+![Tools](docs/tools.png)
+
+### Logs
+![Logs](docs/logs.png)
+
+### Settings
+![Settings](docs/settings.png)
+
+### Themes (Matrix · Cyber)
+![Server in Matrix theme](docs/server-matrix.png)
+![Overview in Cyber theme](docs/overview-cyber.png)
+
+</details>
 
 ---
 
