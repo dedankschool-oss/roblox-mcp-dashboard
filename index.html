@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roblox MCP · Nebula Dashboard</title>
+<title>Vyre · Roblox MCP Dashboard</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%238b7cf6'/%3E%3Cpath d='M16 6l8 4.6v9.2L16 24.4 8 19.8v-9.2z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@
       <svg viewBox="0 0 32 32"><path d="M16 4l11 6.3v12.7L16 29.3 5 23V10.3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 4v25.3M5 10.3l11 6.3 11-6.3" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/></svg>
     </div>
     <div class="cb-brand-text">
-      <span class="cb-title">Nebula</span>
+      <span class="cb-title">Vyre</span>
       <span class="cb-sub">Roblox MCP</span>
     </div>
   </div>
@@ -32,6 +32,7 @@
   </button>
 
   <div class="cb-right">
+    <div class="cb-latency" id="latencyChip" title="Round-trip to the MCP"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="latencyVal">— ms</span></div>
     <button class="cb-plug" id="connectBtn" title="Connect an executor">
       <svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M8 8h8v3a4 4 0 0 1-8 0z"/><path d="M12 15v7"/></svg>
       <span>Connect</span>
@@ -43,6 +44,9 @@
     <div class="cb-palette" id="paletteDots"></div>
     <button class="cb-icon" id="themeMode" title="Toggle contrast">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" fill="none"/></svg>
+    </button>
+    <button class="cb-icon" id="helpBtn" title="Keyboard shortcuts (?)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3 2.5c-.7.3-1 .8-1 1.5M12 17h.01"/></svg>
     </button>
   </div>
 </header>
@@ -73,6 +77,10 @@
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.2.66.79 1.13 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     <span>Settings</span>
   </button>
+  <a class="dock-item dock-link" href="https://github.com/dedankschool-oss/roblox-mcp-dashboard" target="_blank" rel="noopener" title="GitHub">
+    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0C17 4.6 18 5 18 5c.6 1.6.2 2.8 0 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+    <span>GitHub</span>
+  </a>
 </nav>
 
 <main class="stage" id="stage">
@@ -90,6 +98,14 @@
       </button>
     </div>
 
+    <div class="quickbar">
+      <button class="qb-btn" data-q="connect"><svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M8 8h8v3a4 4 0 0 1-8 0z"/><path d="M12 15v7"/></svg>Connect</button>
+      <button class="qb-btn" data-q="index"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Index Game</button>
+      <button class="qb-btn" data-q="console"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Console</button>
+      <button class="qb-btn" data-q="snapshot"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Snapshot</button>
+      <button class="qb-btn" data-q="theme"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 22a10 10 0 1 1 0-20 8 8 0 0 1 0 16h-1.5a1.5 1.5 0 0 0 0 3 1.5 1.5 0 0 1 0 1z"/></svg>Shuffle Theme</button>
+    </div>
+
     <div class="bento">
       <article class="bento-card bento-hero" id="heroCard">
         <div class="hero-glow"></div>
@@ -103,10 +119,10 @@
             <span class="hero-transport" id="heroTransport">—</span>
           </div>
           <div class="hero-meta">
-            <div class="meta-cell"><span>User ID</span><b id="heroUserId">—</b></div>
-            <div class="meta-cell"><span>Place ID</span><b id="heroPlaceId">—</b></div>
-            <div class="meta-cell"><span>Job ID</span><b id="heroJobId" class="mono-ellip">—</b></div>
-            <div class="meta-cell"><span>Client ID</span><b id="heroClientId" class="mono-ellip">—</b></div>
+            <div class="meta-cell copy" data-copy><span>User ID</span><b id="heroUserId">—</b></div>
+            <div class="meta-cell copy" data-copy><span>Place ID</span><b id="heroPlaceId">—</b></div>
+            <div class="meta-cell copy" data-copy><span>Job ID</span><b id="heroJobId" class="mono-ellip">—</b></div>
+            <div class="meta-cell copy" data-copy><span>Client ID</span><b id="heroClientId" class="mono-ellip">—</b></div>
           </div>
         </div>
         <div class="hero-cta" id="heroEmpty" hidden>
@@ -120,7 +136,7 @@
         </div>
       </article>
 
-      <article class="bento-card bento-ring">
+      <article class="bento-card bento-ring" title="Session uptime">
         <div class="ring-wrap">
           <svg class="ring" viewBox="0 0 120 120">
             <circle class="ring-track" cx="60" cy="60" r="52"/>
@@ -128,27 +144,27 @@
           </svg>
           <div class="ring-center">
             <b id="uptimeClock">00:00:00</b>
-            <span>uptime</span>
+            <span id="uptimeSince">uptime</span>
           </div>
         </div>
       </article>
 
-      <article class="bento-card stat" data-tone="a">
+      <article class="bento-card stat clickable" data-tone="a" data-jump="server">
         <span class="stat-label">Clients</span>
         <b class="stat-value" id="statClients">0</b>
         <svg class="spark" id="sparkClients" viewBox="0 0 100 32" preserveAspectRatio="none"></svg>
       </article>
-      <article class="bento-card stat" data-tone="b">
+      <article class="bento-card stat clickable" data-tone="b" data-jump="server">
         <span class="stat-label">Relay Peers</span>
         <b class="stat-value" id="statRelays">0</b>
         <svg class="spark" id="sparkRelays" viewBox="0 0 100 32" preserveAspectRatio="none"></svg>
       </article>
-      <article class="bento-card stat" data-tone="c">
+      <article class="bento-card stat clickable" data-tone="c" data-jump="scripts">
         <span class="stat-label">Scripts Synced</span>
         <b class="stat-value" id="statScripts">0%</b>
         <div class="mini-bar"><i id="barScripts"></i></div>
       </article>
-      <article class="bento-card stat" data-tone="d">
+      <article class="bento-card stat clickable" data-tone="d" data-jump="scripts">
         <span class="stat-label">Semantic Index</span>
         <b class="stat-value" id="statSemantic">0%</b>
         <div class="mini-bar"><i id="barSemantic"></i></div>
@@ -156,7 +172,7 @@
 
       <article class="bento-card bento-ticker">
         <div class="ticker-head">
-          <span>Live Log</span>
+          <span>Live Activity</span>
           <span class="ticker-live"><i></i>streaming</span>
         </div>
         <div class="ticker-body" id="tickerBody"></div>
@@ -167,13 +183,18 @@
   <section class="view" id="view-server">
     <div class="view-head"><div><h1 class="view-title">Server</h1><p class="view-desc">Relay topology and connected clients.</p></div></div>
     <article class="bento-card topo-card">
+      <div class="topo-legend">
+        <span><i class="lg-core"></i>MCP Core</span>
+        <span><i class="lg-client"></i>Client</span>
+        <span><i class="lg-relay"></i>Relay peer</span>
+      </div>
       <div class="topo-wrap"><div class="topo-svg-layer" id="serverTopo"></div></div>
     </article>
     <div class="server-grid">
       <article class="bento-card stat" data-tone="a"><span class="stat-label">Status</span><b class="stat-value" id="srvStatus">—</b></article>
       <article class="bento-card stat" data-tone="b"><span class="stat-label">Clients</span><b class="stat-value" id="srvClients">0</b></article>
       <article class="bento-card stat" data-tone="c"><span class="stat-label">Relay Peers</span><b class="stat-value" id="srvRelays">0</b></article>
-      <article class="bento-card stat" data-tone="d"><span class="stat-label">Role</span><b class="stat-value" id="srvRole">Primary</b></article>
+      <article class="bento-card stat" data-tone="d"><span class="stat-label">Latency</span><b class="stat-value" id="srvLatency">—</b></article>
     </div>
     <div class="panel">
       <div class="panel-head"><h3>Connected Clients</h3><span class="pill" id="srvClientCount">0</span></div>
@@ -188,37 +209,96 @@
       <div class="tools-runner">
         <div class="runner-head">
           <div><h3 id="toolName">—</h3><p id="toolDesc" class="runner-desc">—</p></div>
-          <button class="btn-run" id="toolRun"><span>Run</span><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+          <button class="btn-run" id="toolRun"><span>Run</span><kbd>Ctrl ↵</kbd><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
         </div>
         <div class="runner-params" id="toolParams"></div>
         <div class="runner-out">
-          <div class="runner-out-head"><span>Response</span><span class="runner-out-meta"><b id="toolStatus"></b><i id="toolTime"></i></span></div>
+          <div class="runner-out-head"><span>Response</span>
+            <span class="runner-out-meta"><b id="toolStatus"></b><i id="toolTime"></i>
+              <button class="mini-icon" id="toolCopy" title="Copy response"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+              <button class="mini-icon" id="toolDownload" title="Download response"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </span>
+          </div>
           <pre id="toolOutput">Run a tool to see its output.</pre>
         </div>
+        <div class="runner-history" id="toolHistory"></div>
       </div>
     </div>
   </section>
 
   <section class="view" id="view-scripts">
-    <div class="view-head"><div><h1 class="view-title">Scripts</h1><p class="view-desc">Decompiled sources indexed from the client.</p></div></div>
-    <div class="panel">
-      <div class="panel-head">
-        <div class="search-wrap">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input id="scriptSearch" placeholder="Filter scripts by name…" autocomplete="off">
+    <div class="view-head"><div><h1 class="view-title">Scripts</h1><p class="view-desc">Decompiled sources, arranged like the Studio Explorer.</p></div></div>
+    <div class="scripts-layout">
+      <div class="panel scripts-explorer">
+        <div class="panel-head">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input id="scriptSearch" placeholder="Search Explorer…" autocomplete="off">
+          </div>
+          <div class="explorer-tools">
+            <button class="mini-icon" id="treeCollapse" title="Collapse all"><svg viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/></svg></button>
+            <span class="pill" id="scriptCount">0</span>
+          </div>
         </div>
-        <span class="pill" id="scriptCount">0</span>
+        <div class="tree" id="scriptTree"></div>
       </div>
-      <div class="script-list" id="scriptList"></div>
+      <div class="panel scripts-viewer">
+        <div class="viewer-head">
+          <div class="viewer-title" id="viewerTitle">Select a script</div>
+          <div class="viewer-actions">
+            <span class="viewer-meta" id="viewerMeta"></span>
+            <button class="mini-icon" id="viewerCopy" title="Copy source"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+          </div>
+        </div>
+        <div class="viewer-body" id="viewerBody"><div class="viewer-empty">Pick a script from the Explorer to view its source.</div></div>
+      </div>
+      <aside class="scripts-sync">
+        <div class="panel">
+          <div class="panel-head"><h3>Scripts Synced</h3></div>
+          <div class="sync-block">
+            <div class="gh-bar"><i id="syncBar" style="background:var(--a3)"></i></div>
+            <div class="gh-legend"><span class="gh-dot" style="background:var(--a3)"></span><span>Mapped</span><b id="syncCount">0 / 0</b><em id="syncPerc">0%</em></div>
+            <div class="sync-status" id="syncStatus">Waiting</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Semantic Index</h3></div>
+          <div class="sync-block">
+            <div class="gh-bar"><i id="indexBar" style="background:var(--ok)"></i></div>
+            <div class="gh-legend"><span class="gh-dot" style="background:var(--ok)"></span><span>Embedded</span><b id="indexCount">0 / 0</b><em id="indexPerc">0%</em></div>
+            <button class="btn-run wide" id="indexBtn"><span>Index Game</span></button>
+            <div class="sync-status" id="indexStatus">Idle</div>
+          </div>
+        </div>
+      </aside>
     </div>
   </section>
 
   <section class="view" id="view-logs">
     <div class="view-head">
-      <div><h1 class="view-title">Server Logs</h1><p class="view-desc">Rolling event stream from the MCP core.</p></div>
+      <div><h1 class="view-title">Logs</h1><p class="view-desc">Separated into activity and system noise.</p></div>
       <div class="log-controls">
         <button class="btn-ghost is-live" id="logLive"><i class="live-dot"></i>Live</button>
+        <button class="btn-ghost" id="logCopy">Copy</button>
         <button class="btn-ghost" id="logClear">Clear</button>
+      </div>
+    </div>
+    <div class="log-filters">
+      <div class="seg" id="logScope">
+        <button class="seg-btn active" data-scope="activity">Activity</button>
+        <button class="seg-btn" data-scope="system">System</button>
+        <button class="seg-btn" data-scope="all">All</button>
+      </div>
+      <div class="chips" id="logChips">
+        <button class="chip active" data-lvl="all">All</button>
+        <button class="chip" data-lvl="info">Info</button>
+        <button class="chip" data-lvl="success">Success</button>
+        <button class="chip" data-lvl="warn">Warn</button>
+        <button class="chip" data-lvl="error">Error</button>
+      </div>
+      <div class="search-wrap slim">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="logSearch" placeholder="Filter messages…" autocomplete="off">
       </div>
     </div>
     <div class="panel logs-panel">
@@ -228,7 +308,7 @@
   </section>
 
   <section class="view" id="view-settings">
-    <div class="view-head"><div><h1 class="view-title">Settings</h1><p class="view-desc">Appearance and semantic search.</p></div></div>
+    <div class="view-head"><div><h1 class="view-title">Settings</h1><p class="view-desc">Appearance, embeddings, and about.</p></div></div>
     <div class="settings-grid">
       <article class="panel">
         <div class="panel-head"><h3>Theme</h3></div>
@@ -236,21 +316,39 @@
       </article>
       <article class="panel">
         <div class="panel-head"><h3>Appearance</h3></div>
-        <label class="setting-row"><span>Aurora background</span>
-          <span class="switch"><input type="checkbox" id="setAurora" checked><i></i></span></label>
-        <label class="setting-row"><span>Film grain</span>
-          <span class="switch"><input type="checkbox" id="setGrain" checked><i></i></span></label>
-        <label class="setting-row"><span>Reduce motion</span>
-          <span class="switch"><input type="checkbox" id="setMotion"><i></i></span></label>
-        <label class="setting-row"><span>Compact density</span>
-          <span class="switch"><input type="checkbox" id="setCompact"><i></i></span></label>
+        <label class="setting-row"><span>Aurora background</span><span class="switch"><input type="checkbox" id="setAurora" checked><i></i></span></label>
+        <label class="setting-row"><span>Film grain</span><span class="switch"><input type="checkbox" id="setGrain" checked><i></i></span></label>
+        <label class="setting-row"><span>Reduce motion</span><span class="switch"><input type="checkbox" id="setMotion"><i></i></span></label>
+        <label class="setting-row"><span>Compact density</span><span class="switch"><input type="checkbox" id="setCompact"><i></i></span></label>
+        <label class="setting-row"><span>High contrast</span><span class="switch"><input type="checkbox" id="setContrast"><i></i></span></label>
       </article>
+
+      <article class="panel settings-wide">
+        <div class="panel-head"><h3>Embedding Provider</h3><div class="seg" id="provSeg"><button class="seg-btn active" data-prov="openai">OpenAI</button><button class="seg-btn" data-prov="ollama">Ollama</button></div></div>
+        <div class="prov-pane" id="provOpenai">
+          <div class="field2"><label>API Key</label><input type="password" id="oaKey" placeholder="sk-…" autocomplete="off"></div>
+          <div class="field2"><label>Base URL</label><input type="text" id="oaUrl" placeholder="https://api.openai.com/v1"></div>
+          <div class="field2"><label>Model</label><input type="text" id="oaModel" placeholder="text-embedding-3-small"></div>
+        </div>
+        <div class="prov-pane" id="provOllama" hidden>
+          <div class="field2"><label>Base URL</label><input type="text" id="olUrl" placeholder="http://localhost:11434"></div>
+          <div class="field2"><label>Model</label><input type="text" id="olModel" placeholder="embeddinggemma"></div>
+        </div>
+        <label class="setting-row inset"><span>Persist embeddings to disk</span><span class="switch"><input type="checkbox" id="saveEmb"><i></i></span></label>
+        <div class="settings-actions">
+          <button class="btn-ghost" id="testProv">Test connection</button>
+          <button class="btn-ghost danger" id="delCache">Delete cache</button>
+          <button class="btn-run" id="saveProv"><span>Save</span></button>
+        </div>
+        <div class="test-result" id="testResult"></div>
+      </article>
+
       <article class="panel">
-        <div class="panel-head"><h3>Semantic Search</h3></div>
-        <div class="kv"><span>Provider</span><b id="semProvider">—</b></div>
-        <div class="kv"><span>Model</span><b id="semModel">—</b></div>
-        <div class="kv"><span>Persist cache</span><b id="semCache">—</b></div>
-        <p class="hint">Configured in <code>.roblox-mcp/semantic-search.json</code>.</p>
+        <div class="panel-head"><h3>About Vyre</h3></div>
+        <div class="kv"><span>Build</span><b>Vyre Dashboard</b></div>
+        <div class="kv"><span>Bridge port</span><b>16384</b></div>
+        <div class="kv"><span>Repository</span><a class="kv-link" href="https://github.com/dedankschool-oss/roblox-mcp-dashboard" target="_blank" rel="noopener">github.com/dedankschool-oss/roblox-mcp-dashboard</a></div>
+        <p class="hint">A drop-in dashboard for the Roblox MCP bridge. Owned and maintained by you.</p>
       </article>
     </div>
   </section>
@@ -287,13 +385,13 @@
       <div class="hero-glow"></div>
       <div class="modal-eyebrow">Executor loader</div>
       <h2>Connect your Roblox session</h2>
-      <p>Runs the bridge connector so this dashboard can see and drive your game.</p>
+      <p>Runs the bridge connector so Vyre can see and drive your game.</p>
       <button class="modal-close" id="connectClose"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>
     <div class="modal-body">
       <div class="steps">
         <div class="step"><p>Open your executor while you are <b>in a Roblox game</b>. Any executor with <b>loadstring</b> + <b>HttpGet</b> works.</p></div>
-        <div class="step"><p>Paste this into the editor and <b>execute</b> it (or drop it in your autoexec folder to run on every launch):</p></div>
+        <div class="step"><p>Paste this into the editor and <b>execute</b> it (or drop it in your autoexec folder):</p></div>
       </div>
       <div class="code-block" id="loaderCode"><span class="tok-fn">loadstring</span><span class="tok-punc">(</span>game<span class="tok-punc">:</span><span class="tok-fn">HttpGet</span><span class="tok-punc">(</span><span class="tok-str">"http://localhost:16384/script.luau"</span><span class="tok-punc">))()</span>
         <button class="copy-btn" id="loaderCopy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</button>
@@ -303,7 +401,26 @@
       </div>
       <div class="modal-note">
         <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
-        <span>Port <b>16384</b> has no auth — keep it on localhost or a trusted LAN, never the open internet. For a different host set <code>getgenv().BridgeURL</code> before the loader.</span>
+        <span>Port <b>16384</b> has no auth — keep it on localhost or a trusted LAN. For a different host set <code>getgenv().BridgeURL</code> before the loader.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="helpModal" hidden>
+  <div class="modal-card small">
+    <div class="modal-top">
+      <div class="modal-eyebrow">Reference</div>
+      <h2>Keyboard shortcuts</h2>
+      <button class="modal-close" id="helpClose"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="keys">
+        <div class="key-row"><span>Command palette</span><kbd>Ctrl K</kbd></div>
+        <div class="key-row"><span>This help</span><kbd>?</kbd></div>
+        <div class="key-row"><span>Run tool</span><kbd>Ctrl ↵</kbd></div>
+        <div class="key-row"><span>Views</span><kbd>1</kbd><kbd>…</kbd><kbd>6</kbd></div>
+        <div class="key-row"><span>Close overlays</span><kbd>Esc</kbd></div>
       </div>
     </div>
   </div>
