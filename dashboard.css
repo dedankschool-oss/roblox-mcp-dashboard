@@ -331,3 +331,69 @@ html[data-density="compact"] .stage{padding-top:74px}
   .bento-hero,.bento-ring,.bento-ticker{grid-column:span 1}
   .hero-meta{grid-template-columns:repeat(2,1fr)}
 }
+
+.cb-plug{display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:10px;cursor:pointer;border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--text-2);font-family:var(--sans);font-size:12.5px;font-weight:500;transition:.2s}
+.cb-plug:hover{color:var(--text);border-color:var(--stroke-strong)}
+.cb-plug svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+
+.cmd-group-label{padding:12px 14px 6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--text-3)}
+.cmd-empty{padding:26px 14px;text-align:center;color:var(--text-3);font-size:13px}
+.cmd-item kbd{margin-left:auto;font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.06);color:var(--text-3)}
+.cmd-item .ci-badge{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;flex-shrink:0;background:rgba(255,255,255,.05)}
+.cmd-item .ci-badge svg{width:15px;height:15px}
+.cmd-item.sel .ci-badge{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff}
+.cmd-hint{display:flex;gap:16px;padding:9px 16px;border-top:1px solid var(--stroke);font-size:11px;color:var(--text-3)}
+.cmd-hint span{display:flex;align-items:center;gap:6px}
+.cmd-hint kbd{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.06)}
+
+.modal{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);animation:fade .2s var(--ease)}
+.modal[hidden]{display:none}
+.modal-card{width:min(560px,94vw);background:var(--card-solid);border:1px solid var(--stroke-strong);border-radius:20px;overflow:hidden;box-shadow:0 40px 90px -24px rgba(0,0,0,.85)}
+.modal-top{position:relative;padding:26px 26px 20px;border-bottom:1px solid var(--stroke);overflow:hidden}
+.modal-top .hero-glow{width:280px;height:280px;right:-90px;top:-140px;opacity:.32}
+.modal-eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--a2)}
+.modal-card h2{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+.modal-card h2+p{color:var(--text-2);font-size:13.5px;margin-top:4px}
+.modal-close{position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid var(--stroke);color:var(--text-2);transition:.2s}
+.modal-close:hover{color:var(--text);border-color:var(--stroke-strong)}
+.modal-close svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+.modal-body{padding:22px 26px 26px;display:flex;flex-direction:column;gap:18px}
+.steps{display:flex;flex-direction:column;gap:14px;counter-reset:s}
+.step{display:flex;gap:13px;align-items:flex-start}
+.step::before{counter-increment:s;content:counter(s);flex-shrink:0;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2))}
+.step p{font-size:13.5px;color:var(--text-2);padding-top:2px}
+.step b{color:var(--text);font-weight:600}
+.code-block{position:relative;background:#0a0a10;border:1px solid var(--stroke);border-radius:12px;padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#d7d7e6;overflow-x:auto;white-space:pre}
+.code-block .tok-fn{color:var(--a2)} .code-block .tok-str{color:var(--ok)} .code-block .tok-punc{color:var(--text-3)}
+.copy-btn{position:absolute;top:9px;right:9px;display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;cursor:pointer;border:1px solid var(--stroke);background:rgba(255,255,255,.05);color:var(--text-2);font-family:var(--sans);font-size:11px;font-weight:500;transition:.18s}
+.copy-btn:hover{color:var(--text);border-color:var(--stroke-strong)}
+.copy-btn.done{color:var(--ok);border-color:rgba(52,211,153,.4)}
+.copy-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+.modal-note{display:flex;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);font-size:12px;color:var(--text-2)}
+.modal-note svg{width:16px;height:16px;flex-shrink:0;fill:none;stroke:var(--warn);stroke-width:2}
+
+.hero-cta{display:flex;flex-direction:column;align-items:flex-start;gap:14px;position:relative;padding-top:8px}
+.hero-cta h2{font-size:22px;font-weight:700}
+.hero-cta p{color:var(--text-2);font-size:14px;max-width:44ch}
+.hero-cta-btn{display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:12px;cursor:pointer;border:none;background:linear-gradient(120deg,var(--a1),var(--a2));color:#fff;font-family:var(--sans);font-weight:600;font-size:14px;box-shadow:0 12px 30px -12px var(--a1);transition:transform .15s,filter .15s}
+.hero-cta-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.hero-cta-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+
+.topo-card{grid-column:1/-1;min-height:300px;position:relative;overflow:hidden}
+.topo-wrap{position:relative;width:100%;height:300px}
+.topo-svg{position:absolute;inset:0;width:100%;height:100%}
+.topo-link{stroke:var(--a1);stroke-width:1.5;fill:none;opacity:.35;stroke-dasharray:4 6;animation:flow 1.4s linear infinite}
+.topo-link.relay{stroke:var(--a3);opacity:.28}
+@keyframes flow{to{stroke-dashoffset:-20}}
+.topo-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+.topo-core{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 0 0 8px rgba(139,124,246,.08),0 16px 40px -12px var(--a1);animation:corePulse 3s var(--ease) infinite}
+@keyframes corePulse{50%{box-shadow:0 0 0 14px rgba(139,124,246,.05),0 16px 44px -10px var(--a1)}}
+.topo-core svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.8}
+.topo-dot{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--a2),var(--a3));border:2px solid rgba(255,255,255,.12);box-shadow:0 10px 26px -12px var(--a2);overflow:hidden;cursor:pointer;transition:transform .18s var(--ease)}
+.topo-dot:hover{transform:scale(1.08)}
+.topo-dot img{width:100%;height:100%;object-fit:cover}
+.topo-dot.relay{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.06);color:var(--text-2);font-size:11px}
+.topo-label{font-size:11px;color:var(--text-2);font-weight:500;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topo-label small{display:block;color:var(--text-3);font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em}
+
+.cr-avatar img,.di-avatar img,.client-chip-avatar img,.hero-avatar img{width:100%;height:100%;object-fit:cover}

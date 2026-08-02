@@ -15,8 +15,21 @@ index.html   ·   styles.css   ·   app.js
 ### Layout
 - **Floating dock rail** that expands on hover — replaces the static sidebar with an icon dock that grows to reveal labels.
 - **Bento overview** — an asymmetric grid: a hero client card, a live uptime ring, four live stat tiles with sparklines, and a streaming log ticker.
-- **Command bar** — global search button, live connection pill, palette dots, and a contrast toggle.
+- **Command bar** — global search, a **Connect** button, live connection pill, palette dots, and a contrast toggle.
 - **Fully responsive** — collapses to a single column on tablet and phone.
+
+### Connect flow
+- A **Connect** modal (command bar, the overview call-to-action, or `⌘K → Connect executor`) shows the exact executor loader with a one-click **copy** button, step-by-step instructions, and a localhost-safety note.
+- When no client is attached, the hero card turns into a "hook up your executor" prompt instead of sitting empty.
+
+### Real player avatars
+Client headshots are pulled through the MCP's `/api/avatar?userId=` proxy (Roblox thumbnails) and shown on the hero, client chip, dropdown, connected-clients table, server topology, and command palette — with a clean initials fallback when an image isn't available.
+
+### Live server topology
+The **Server** view renders an animated topology: a central MCP core with a ring of connected clients and relay peers, live flow lines, and clickable client nodes that select the client.
+
+### Command palette
+`Ctrl / ⌘ + K` opens a **grouped** palette — Navigate, Actions, Appearance, Tools, and Clients — with icons, live client rows, keyboard nav, and quick actions (connect executor, copy loader, clear logs, toggle themes/contrast).
 
 ### Themes
 Six palettes, switched instantly from the palette dots (command bar) or the **Settings → Theme** gallery. Choice is saved to `localStorage`.
@@ -31,9 +44,6 @@ Six palettes, switched instantly from the palette dots (command bar) or the **Se
 | Mono   | Neutral slate            |
 
 Plus appearance toggles: **aurora background**, **film grain**, **reduce motion**, **compact density**, and a **high-contrast** mode.
-
-### Command palette
-`Ctrl / ⌘ + K` opens a fuzzy palette to jump between views, switch themes, or open a tool. Arrow keys + Enter, `Esc` to close.
 
 ### Live views
 - **Overview** — hero card, animated uptime ring, live stats (clients, relay peers, script-sync %, semantic-index %), and a log ticker.
@@ -54,23 +64,23 @@ If `/api/status` isn't reachable (opened standalone, or the MCP isn't running), 
 
 Point the MCP server at these files so the dashboard is served at `http://localhost:16384/`.
 
+The three files are already named to match what the server serves (`index.html`, `dashboard.css`, `dashboard.js`) — no renaming needed.
+
 1. Clone this repo:
    ```bash
    git clone https://github.com/dedankschool-oss/roblox-mcp-dashboard.git
    ```
-2. Copy the three files over the MCP's dashboard assets, renaming to match what the server serves:
+2. Copy the three files over the MCP's dashboard assets:
    ```bash
-   cp index.html  <mcp>/src/http/assets/dashboard/index.html
-   cp styles.css  <mcp>/src/http/assets/dashboard/dashboard.css
-   cp app.js      <mcp>/src/http/assets/dashboard/dashboard.js
+   cp index.html dashboard.css dashboard.js <mcp>/src/http/assets/dashboard/
    ```
-   The MCP's `index.html` links `dashboard.css` and `dashboard.js`; this repo links `styles.css` and `app.js`. Either rename the files as above, or edit the two `<link>`/`<script>` references in `index.html` to keep the original names.
-3. Rebuild and restart the MCP:
+3. Rebuild:
    ```bash
    npm run build
    ```
-   `copy-assets` copies the dashboard into `dist/`; restart the server to pick it up.
-4. Open `http://localhost:16384/`.
+   `copy-assets` copies the dashboard into `dist/`.
+4. **Restart the MCP server.** It caches assets in memory at startup, so the new UI only appears after a restart.
+5. Open `http://localhost:16384/`.
 
 ### Option B — standalone / demo
 

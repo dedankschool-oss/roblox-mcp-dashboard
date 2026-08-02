@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -32,6 +32,10 @@
   </button>
 
   <div class="cb-right">
+    <button class="cb-plug" id="connectBtn" title="Connect an executor">
+      <svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M8 8h8v3a4 4 0 0 1-8 0z"/><path d="M12 15v7"/></svg>
+      <span>Connect</span>
+    </button>
     <div class="cb-status" id="connPill">
       <span class="cb-dot"></span>
       <span id="connText">Connecting…</span>
@@ -89,19 +93,30 @@
     <div class="bento">
       <article class="bento-card bento-hero" id="heroCard">
         <div class="hero-glow"></div>
-        <div class="hero-top">
-          <div class="hero-avatar" id="heroAvatar"></div>
-          <div class="hero-id">
-            <h2 id="heroName">—</h2>
-            <p id="heroPlace">Waiting for a client…</p>
+        <div id="heroConnected">
+          <div class="hero-top">
+            <div class="hero-avatar" id="heroAvatar"></div>
+            <div class="hero-id">
+              <h2 id="heroName">—</h2>
+              <p id="heroPlace">Waiting for a client…</p>
+            </div>
+            <span class="hero-transport" id="heroTransport">—</span>
           </div>
-          <span class="hero-transport" id="heroTransport">—</span>
+          <div class="hero-meta">
+            <div class="meta-cell"><span>User ID</span><b id="heroUserId">—</b></div>
+            <div class="meta-cell"><span>Place ID</span><b id="heroPlaceId">—</b></div>
+            <div class="meta-cell"><span>Job ID</span><b id="heroJobId" class="mono-ellip">—</b></div>
+            <div class="meta-cell"><span>Client ID</span><b id="heroClientId" class="mono-ellip">—</b></div>
+          </div>
         </div>
-        <div class="hero-meta">
-          <div class="meta-cell"><span>User ID</span><b id="heroUserId">—</b></div>
-          <div class="meta-cell"><span>Place ID</span><b id="heroPlaceId">—</b></div>
-          <div class="meta-cell"><span>Job ID</span><b id="heroJobId" class="mono-ellip">—</b></div>
-          <div class="meta-cell"><span>Client ID</span><b id="heroClientId" class="mono-ellip">—</b></div>
+        <div class="hero-cta" id="heroEmpty" hidden>
+          <div class="modal-eyebrow">No client connected</div>
+          <h2>Hook up your executor</h2>
+          <p>Run the loader in your executor and your Roblox session lands here in real time.</p>
+          <button class="hero-cta-btn" id="heroConnectBtn">
+            <svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M8 8h8v3a4 4 0 0 1-8 0z"/><path d="M12 15v7"/></svg>
+            Show connect script
+          </button>
         </div>
       </article>
 
@@ -151,6 +166,9 @@
 
   <section class="view" id="view-server">
     <div class="view-head"><div><h1 class="view-title">Server</h1><p class="view-desc">Relay topology and connected clients.</p></div></div>
+    <article class="bento-card topo-card">
+      <div class="topo-wrap"><div class="topo-svg-layer" id="serverTopo"></div></div>
+    </article>
     <div class="server-grid">
       <article class="bento-card stat" data-tone="a"><span class="stat-label">Status</span><b class="stat-value" id="srvStatus">—</b></article>
       <article class="bento-card stat" data-tone="b"><span class="stat-label">Clients</span><b class="stat-value" id="srvClients">0</b></article>
@@ -243,10 +261,15 @@
   <div class="cmd-panel">
     <div class="cmd-input-wrap">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input id="cmdInput" placeholder="Jump to a view, client, or tool…" autocomplete="off">
+      <input id="cmdInput" placeholder="Type a command or search…" autocomplete="off">
       <kbd>Esc</kbd>
     </div>
     <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-hint">
+      <span><kbd>↑↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> select</span>
+      <span><kbd>esc</kbd> close</span>
+    </div>
   </div>
 </div>
 
@@ -258,8 +281,36 @@
   <div class="drop-list" id="clientDropList"></div>
 </div>
 
+<div class="modal" id="connectModal" hidden>
+  <div class="modal-card">
+    <div class="modal-top">
+      <div class="hero-glow"></div>
+      <div class="modal-eyebrow">Executor loader</div>
+      <h2>Connect your Roblox session</h2>
+      <p>Runs the bridge connector so this dashboard can see and drive your game.</p>
+      <button class="modal-close" id="connectClose"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <div class="step"><p>Open your executor while you are <b>in a Roblox game</b>. Any executor with <b>loadstring</b> + <b>HttpGet</b> works.</p></div>
+        <div class="step"><p>Paste this into the editor and <b>execute</b> it (or drop it in your autoexec folder to run on every launch):</p></div>
+      </div>
+      <div class="code-block" id="loaderCode"><span class="tok-fn">loadstring</span><span class="tok-punc">(</span>game<span class="tok-punc">:</span><span class="tok-fn">HttpGet</span><span class="tok-punc">(</span><span class="tok-str">"http://localhost:16384/script.luau"</span><span class="tok-punc">))()</span>
+        <button class="copy-btn" id="loaderCopy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</button>
+      </div>
+      <div class="steps">
+        <div class="step"><p>Your client appears here within a second. Pick it from the <b>client selector</b> and you are live.</p></div>
+      </div>
+      <div class="modal-note">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <span>Port <b>16384</b> has no auth — keep it on localhost or a trusted LAN, never the open internet. For a different host set <code>getgenv().BridgeURL</code> before the loader.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
 
-<script src="app.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>
