@@ -425,10 +425,10 @@ html[data-density="compact"] .stage{padding-top:74px}
 .topo-core::after{content:"";position:absolute;inset:-6px;border-radius:26px;border:1px solid rgba(139,124,246,.3);animation:coreRing 3s var(--ease) infinite}
 @keyframes coreRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.5);opacity:0}}
 
-.scripts-layout{display:grid;grid-template-columns:300px 1fr 240px;gap:16px;align-items:start;height:calc(100vh - 190px)}
-.scripts-explorer{display:flex;flex-direction:column;max-height:100%}
+.scripts-layout{display:grid;grid-template-columns:300px minmax(0,1fr) 240px;gap:16px;align-items:stretch;height:calc(100vh - 200px);min-height:420px}
+.scripts-explorer{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .explorer-tools{display:flex;align-items:center;gap:8px}
-.tree{overflow:auto;padding:8px 6px;flex:1}
+.tree{overflow:auto;padding:8px 6px;flex:1;min-height:0}
 .tree-node{user-select:none}
 .tree-row{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:8px;cursor:pointer;font-size:12.5px;color:var(--text-2);transition:background .12s}
 .tree-row:hover{background:rgba(255,255,255,.04);color:var(--text)}
@@ -444,7 +444,8 @@ html[data-density="compact"] .stage{padding-top:74px}
 .tree-node.collapsed>.tree-children{display:none}
 .ico-folder{color:var(--a3)} .ico-script{color:#60a5fa} .ico-local{color:#f59e0b} .ico-module{color:#34d399} .ico-service{color:var(--a2)}
 
-.scripts-viewer{display:flex;flex-direction:column;max-height:100%;overflow:hidden}
+.scripts-viewer{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.scripts-sync{min-height:0;overflow:auto}
 .viewer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;border-bottom:1px solid var(--stroke)}
 .viewer-title{font-family:var(--mono);font-size:12.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .viewer-actions{display:flex;align-items:center;gap:10px}
@@ -510,4 +511,41 @@ html[data-density="compact"] .stage{padding-top:74px}
 .key-row span{flex:1}
 .key-row kbd{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid var(--stroke);color:var(--text)}
 
-@media(max-width:1180px){.scripts-layout{grid-template-columns:1fr;height:auto}.scripts-viewer{min-height:340px}}
+@media(max-width:1180px){.scripts-layout{grid-template-columns:1fr;height:auto}.scripts-viewer{min-height:340px}.scripts-explorer{min-height:320px}}
+
+.netgraph{position:absolute;inset:0}
+.ng-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ng-edge{fill:none;stroke:url(#ngGrad);stroke-width:2;stroke-linecap:round;opacity:.5;stroke-dasharray:5 7;animation:ngFlow 1.1s linear infinite}
+.ng-edge.relay{stroke:rgba(255,255,255,.25);opacity:.4;animation-duration:1.6s}
+@keyframes ngFlow{to{stroke-dashoffset:-24}}
+.ng-packet{fill:var(--a2);filter:drop-shadow(0 0 5px var(--a2))}
+.ng-node{position:absolute;transform:translate(-50%,-50%);z-index:2}
+.ng-core{display:flex;flex-direction:column;align-items:center;gap:9px}
+.ng-core-badge{position:relative;width:78px;height:78px;border-radius:22px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 14px 38px -12px var(--a1)}
+.ng-core-badge svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7}
+.ng-core-badge::after{content:"";position:absolute;inset:-7px;border-radius:28px;border:1px solid rgba(139,124,246,.35);animation:coreRing 3s var(--ease) infinite}
+.ng-core-cap{text-align:center;line-height:1.25}
+.ng-core-cap b{font-size:13px;font-weight:600}
+.ng-core-cap span{display:block;font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.14em}
+.ng-client{display:flex;align-items:center;gap:11px;width:210px;padding:11px 13px;border-radius:15px;cursor:pointer;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--stroke-strong);
+  backdrop-filter:blur(10px);box-shadow:0 14px 34px -18px rgba(0,0,0,.8);transition:transform .18s var(--ease),border-color .18s}
+.ng-client:hover{transform:translateY(-2px);border-color:var(--a2)}
+.ng-client.active{border-color:var(--a1);box-shadow:0 0 0 1px var(--a1),0 14px 34px -16px var(--a1)}
+.ng-ava{width:40px;height:40px;border-radius:12px;flex-shrink:0;overflow:hidden;background:linear-gradient(135deg,var(--a2),var(--a3));display:grid;place-items:center;font-weight:700;color:#fff;font-size:14px}
+.ng-ava img{width:100%;height:100%;object-fit:cover}
+.ng-info{min-width:0;flex:1}
+.ng-info b{display:block;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ng-info span{display:block;font-size:11px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ng-badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.08em;color:var(--a2);padding:3px 7px;border-radius:7px;background:rgba(255,255,255,.05);border:1px solid var(--stroke);flex-shrink:0}
+.ng-relay{display:flex;align-items:center;gap:8px;padding:7px 11px;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid var(--stroke);font-size:11px;color:var(--text-2)}
+.ng-relay i{width:8px;height:8px;border-radius:3px;background:rgba(255,255,255,.4)}
+.ng-empty{position:absolute;top:50%;left:62%;transform:translateY(-50%);color:var(--text-3);font-size:12.5px}
+
+.suggest-row{display:flex;align-items:center;gap:10px;padding:10px 20px}
+.suggest-btn{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:9px;cursor:pointer;background:rgba(139,124,246,.1);border:1px solid var(--accent-line,rgba(139,124,246,.35));color:var(--a2);font-family:var(--sans);font-size:12.5px;font-weight:500;transition:.16s}
+.suggest-btn:hover{background:rgba(139,124,246,.18)}
+.suggest-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.suggest-out{font-size:12px;color:var(--text-2);flex:1}
+.suggest-out b{color:var(--text);font-family:var(--mono)}
+.cmd-item mark{background:none;color:var(--a2);font-weight:600}

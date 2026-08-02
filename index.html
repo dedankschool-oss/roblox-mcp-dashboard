@@ -333,6 +333,10 @@
         <div class="prov-pane" id="provOllama" hidden>
           <div class="field2"><label>Base URL</label><input type="text" id="olUrl" placeholder="http://localhost:11434"></div>
           <div class="field2"><label>Model</label><input type="text" id="olModel" placeholder="embeddinggemma"></div>
+          <div class="suggest-row">
+            <button class="suggest-btn" id="suggestBtn"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/><path d="M9 21h6"/></svg>Suggest for my machine</button>
+            <div class="suggest-out" id="suggestOut"></div>
+          </div>
         </div>
         <label class="setting-row inset"><span>Persist embeddings to disk</span><span class="switch"><input type="checkbox" id="saveEmb"><i></i></span></label>
         <div class="settings-actions">

@@ -230,27 +230,31 @@ function renderTopo() {
   const w = box.clientWidth, h = box.clientHeight || 300;
   if (!w) return;
   const cs = state.data.clients || [], relays = state.data.relayClients || 0;
-  const cx = w / 2, cy = h / 2, rC = Math.min(w, h) * 0.32, rR = Math.min(w, h) * 0.46;
   const motion = root.dataset.motion !== "off";
-  const links = [], packets = [], nodes = [];
+  const coreX = w * 0.24, coreY = h / 2, clientX = w * 0.72;
+  const n = cs.length, padY = 58, span = Math.max(0, h - padY * 2);
+  const edges = [], packets = [], nodes = [];
   cs.forEach((c, i) => {
-    const a = -Math.PI / 2 + i / Math.max(1, cs.length) * Math.PI * 2;
-    const x = cx + Math.cos(a) * rC, y = cy + Math.sin(a) * rC;
-    const p = `M${cx} ${cy} L${x.toFixed(1)} ${y.toFixed(1)}`;
-    links.push(`<path class="topo-link" d="${p}"/>`);
-    if (motion) packets.push(`<circle class="topo-packet" r="3"><animateMotion dur="${(1.3 + i * .2).toFixed(1)}s" repeatCount="indefinite" path="${p}"/></circle>`);
-    nodes.push(`<div class="topo-node" style="left:${x}px;top:${y}px" title="${esc(c.username || "")} · ${(c.transport || "ws").toUpperCase()}"><div class="topo-dot" data-cid="${c.clientId}">${avatarInner(c)}</div><div class="topo-label">${esc(c.username || "Client")}<small>${(c.transport || "ws")}</small></div></div>`);
+    const y = n === 1 ? coreY : padY + span * (i / (n - 1));
+    const cp = coreX + (clientX - coreX) * 0.5;
+    const d = `M${coreX.toFixed(1)} ${coreY.toFixed(1)} C${cp.toFixed(1)} ${coreY.toFixed(1)} ${cp.toFixed(1)} ${y.toFixed(1)} ${clientX.toFixed(1)} ${y.toFixed(1)}`;
+    edges.push(`<path class="ng-edge" d="${d}"/>`);
+    if (motion) packets.push(`<circle class="ng-packet" r="3.2"><animateMotion dur="${(1.5 + i * .25).toFixed(2)}s" repeatCount="indefinite" path="${d}"/></circle>`);
+    nodes.push(`<div class="ng-node" style="left:${clientX}px;top:${y}px"><div class="ng-client${c.clientId === state.selected ? " active" : ""}" data-cid="${c.clientId}"><div class="ng-ava">${avatarInner(c)}</div><div class="ng-info"><b>${esc(c.username || "Client")}</b><span>${esc(c.placeName || "—")}</span></div><div class="ng-badge">${(c.transport || "ws").toUpperCase()}</div></div></div>`);
   });
+  const relayNodes = [];
   for (let i = 0; i < relays; i++) {
-    const a = -Math.PI / 2 + (i + .5) / Math.max(1, relays) * Math.PI * 2;
-    const x = cx + Math.cos(a) * rR, y = cy + Math.sin(a) * rR;
-    links.push(`<path class="topo-link relay" d="M${cx} ${cy} L${x.toFixed(1)} ${y.toFixed(1)}"/>`);
-    nodes.push(`<div class="topo-node" style="left:${x}px;top:${y}px"><div class="topo-dot relay">R${i + 1}</div><div class="topo-label">relay</div></div>`);
+    const ry = relays === 1 ? coreY : padY + span * (i / Math.max(1, relays - 1));
+    const rx = w * 0.06, mid = (rx + coreX) / 2;
+    edges.push(`<path class="ng-edge relay" d="M${rx.toFixed(1)} ${ry.toFixed(1)} C${mid.toFixed(1)} ${ry.toFixed(1)} ${mid.toFixed(1)} ${coreY.toFixed(1)} ${coreX.toFixed(1)} ${coreY.toFixed(1)}"/>`);
+    relayNodes.push(`<div class="ng-node" style="left:${rx}px;top:${ry}px"><div class="ng-relay"><i></i>R${i + 1}</div></div>`);
   }
-  box.innerHTML = `<svg class="topo-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${links.join("")}${packets.join("")}</svg>
-    <div class="topo-node" style="left:${cx}px;top:${cy}px"><div class="topo-core"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><circle cx="6.5" cy="7" r="1"/><circle cx="6.5" cy="17" r="1"/></svg></div><div class="topo-label">MCP Core<small>${esc(state.data.role || "primary")}</small></div></div>
-    ${nodes.join("")}`;
-  $$("#serverTopo .topo-dot[data-cid]").forEach(n => n.onclick = () => { state.selected = n.dataset.cid; store.set("client", n.dataset.cid); render(); go("overview"); });
+  const empty = n ? "" : `<div class="ng-empty">No clients connected — hit Connect to attach one.</div>`;
+  box.innerHTML = `<svg class="ng-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="ngGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--a1)"/><stop offset="1" style="stop-color:var(--a2)"/></linearGradient></defs>${edges.join("")}${packets.join("")}</svg>
+    <div class="ng-node" style="left:${coreX}px;top:${coreY}px"><div class="ng-core"><div class="ng-core-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><circle cx="6.5" cy="7" r="1"/><circle cx="6.5" cy="17" r="1"/></svg></div><div class="ng-core-cap"><b>MCP Core</b><span>${esc(state.data.role || "primary")} · :16384</span></div></div></div>
+    ${relayNodes.join("")}${nodes.join("")}${empty}`;
+  box.classList.add("netgraph");
+  $$("#serverTopo .ng-client[data-cid]").forEach(nd => nd.onclick = () => { state.selected = nd.dataset.cid; store.set("client", nd.dataset.cid); render(); go("overview"); });
 }
 
 const LVL = { info: "info", warn: "warn", error: "error", success: "success" };
@@ -563,6 +567,33 @@ async function delCache() {
   try { await fetch("/api/semantic-settings", { method: "DELETE" }); toast("ok", "Embedding cache cleared"); }
   catch (e) { toast("err", String(e.message || e)); }
 }
+function detectGpu() {
+  try {
+    const cv = document.createElement("canvas");
+    const gl = cv.getContext("webgl") || cv.getContext("experimental-webgl");
+    if (!gl) return "unknown";
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    return (ext && gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) || gl.getParameter(gl.RENDERER) || "unknown";
+  } catch { return "unknown"; }
+}
+function suggestModel() {
+  const gpu = detectGpu(), g = String(gpu).toLowerCase();
+  const dedicated = /(rtx|gtx|radeon rx|\bamd\b|nvidia|geforce|\barc\b|quadro|tesla|\ba\d{3,4}\b)/.test(g);
+  const weak = /(gtx\s?(9|10[0-5])|mx\d|uhd|hd graphics)/.test(g);
+  let model, why;
+  if (dedicated && !weak) { model = "mxbai-embed-large"; why = "dedicated GPU with plenty of VRAM headroom — go for the highest-quality embeddings."; }
+  else if (dedicated) { model = "nomic-embed-text"; why = "capable GPU — a fast, high-quality embedding model."; }
+  else if (/intel|iris|apple|mali|adreno/.test(g)) { model = "nomic-embed-text"; why = "integrated graphics — this light, fast model is the safe pick."; }
+  else { model = "nomic-embed-text"; why = "GPU unreadable from the browser — this light model runs well almost anywhere."; }
+  $("#olModel").value = model;
+  $("#suggestOut").innerHTML = `<b>${esc(gpu)}</b> → <b>${model}</b>. ${why} Pull: <b>ollama pull ${model}</b>`;
+}
+function hlLabel(label, q) {
+  if (!q) return esc(label);
+  const i = label.toLowerCase().indexOf(q);
+  if (i < 0) return esc(label);
+  return esc(label.slice(0, i)) + "<mark>" + esc(label.slice(i, i + q.length)) + "</mark>" + esc(label.slice(i + q.length));
+}
 
 const VIEWS = ["overview", "server", "tools", "scripts", "logs", "settings"];
 function go(view) {
@@ -572,7 +603,13 @@ function go(view) {
   if (view === "scripts") loadScripts();
   if (view === "settings") loadSemantic();
   if (view === "logs") renderLogs();
-  if (view === "server") requestAnimationFrame(renderTopo);
+  if (view === "server") ensureTopo();
+}
+function ensureTopo(tries) {
+  tries = tries == null ? 10 : tries;
+  const box = $("#serverTopo");
+  if (box && box.clientWidth > 0) { renderTopo(); return; }
+  if (tries > 0) requestAnimationFrame(() => ensureTopo(tries - 1));
 }
 
 function openConnect() { $("#connectModal").hidden = false; }
@@ -627,7 +664,7 @@ function paintCmd(q) {
     box.appendChild(el("div", "cmd-group-label", g));
     match.filter(c => c.group === g).forEach(c => {
       const it = el("div", "cmd-item");
-      it.innerHTML = `${c.client ? `<div class="ci-badge">${avatarInner(c.client)}</div>` : badge(c)}<span>${esc(c.label)}</span><kbd>${c.kind}</kbd>`;
+      it.innerHTML = `${c.client ? `<div class="ci-badge">${avatarInner(c.client)}</div>` : badge(c)}<span>${hlLabel(c.label, ql)}</span><kbd>${c.kind}</kbd>`;
       const idx = cmdItems.length;
       it.onmouseenter = () => { cmdSel = idx; markCmd(); };
       it.onclick = () => { c.run(); closeCmd(); };
@@ -706,6 +743,7 @@ function wire() {
 
   $$("#provSeg .seg-btn").forEach(b => b.onclick = () => setProv(b.dataset.prov));
   $("#saveProv").onclick = saveProv; $("#testProv").onclick = testProv; $("#delCache").onclick = delCache;
+  $("#suggestBtn").onclick = suggestModel;
 
   $("#cmdOpen").onclick = openCmd;
   $("#cmdInput").oninput = e => paintCmd(e.target.value);

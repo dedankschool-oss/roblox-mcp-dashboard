@@ -1,5 +1,8 @@
 # Vyre — Roblox MCP Dashboard
 
+> **Want the whole thing (server + dashboard) ready to install?** Use the full repo: **[dedankschool-oss/roblox-executor-mcp](https://github.com/dedankschool-oss/roblox-executor-mcp)** — clone, `npm run install:harnesses`, done. This repo is just the standalone dashboard front-end.
+
+
 A drop-in control panel for the Roblox MCP bridge. Same backend, same API, a completely reworked face: a floating glass **dock**, a **bento** mission-control overview, a **Studio-style script Explorer**, a live **relay topology**, six switchable **color themes**, a grouped **⌘K command palette**, and a **demo mode** so it looks alive even with no client connected.
 
 Three files. No build step. No dependencies.
