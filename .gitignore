@@ -1,5 +1,5 @@
 .serve.mjs
-.shots.mjs
+.shots*.mjs
 package.json
 package-lock.json
 node_modules/
